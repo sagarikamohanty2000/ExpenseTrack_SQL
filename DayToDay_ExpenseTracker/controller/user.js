@@ -1,73 +1,76 @@
+
+const bcrypt = require('bcrypt');
+
 const User = require('../model/Users');
 
-exports.postUserSignin =(req, res, next) =>
+ exports.postUserSignin = async (req, res, next) =>
 {
     const name = req.body.fname;
     const email = req.body.femail;
     const password = req.body.fpassword;
 
-    User.findAll()
-    .then(users => {
-
-        let flag = false;
-        for(let i = 0 ; i<users.length; i++)
+   const user = await User.findAll({where : {email}})
+        if(user.length > 0)
         {
-            if(users[i].name == name)
-            {
-                flag = true;
-               console.log('USER ALREADY EXISTS');
-               res.status(401).json({
-                    error: {
-                      message: "User already exists"
-                    }
-                  })
+            console.log('USER ALREADY EXISTS');
+            res.status(401).json({
+                error: {
+                    message: "User already exists"
+                }
+            })
+        }
+        else {
+            bcrypt.hash(password,10,async(err, hash) => {
+                await User.create({
+                    name : name,
+                    email : email,
+                    password : hash
+                })
+                    console.log('USER CREATED');
+                    res.status(200).json({message : 'Successfully created new user'})
+                    
+                    .catch(err => 
+                        console.log(err));
+                    
+                })      
             }
-        }
-
-        if(flag == false){
-        User.create({
-            name : name,
-            email : email,
-            password : password
-        })
-        .then(result => {
-            console.log('USER CREATED');
-        })
-        .catch(err => 
-            console.log(err));
-        }
-    })
-
 }
 
-exports.postUserLogin = (req,res,next) => {
-    const name = req.body.fname;
+exports.postUserLogin = async (req,res,next) => {
+    const email = req.body.femail;
     const password = req.body.fpassword;
-
-    User.findAll()
-    .then(users => {
-        let flagName = false;
-        let flagPassword = false;
-        for(let i=0; i<users.length; i++)
-        {
-            if(name === users[i].name )
-                { 
-                flagName = true;
-                 if(password === users[i].password)
-                 {
-                    flagPassword = true;  
-                 }
-                }
-
-            if(password === users[i].password)
+ 
+    try {
+    const user = await User.findAll({where : {email}})
+        if(user.length > 0){
+            bcrypt.compare(password, user[0].password, (err, response) => {
+                if(response === true)
                 {
-                   flagPassword = true;  
-                }    
-            
+                   res.status(200).json({
+                       message:"User login successful"
+                   })
+               }
+
+               if(err){
+                console.log("Something went wrong")
+                res.status(500).json({
+                    error:{
+                        message:"Something went wrong"
+                    }
+                })
+                }
+                else{
+                    console.log("User not authorised")
+                    res.status(401).json({
+                       error:{
+                           message:"User not authorised"
+                       }
+                   }) 
+                }
+            })
         }
 
-        if(!flagName || !flagPassword){
-            if(!flagName){
+        else {
             console.log("User not found")
             res.status(404).json({
             error:{
@@ -75,19 +78,7 @@ exports.postUserLogin = (req,res,next) => {
             }
         })
        }
-
-        else if(!flagPassword){
-            console.log("User not authorised")
-             res.status(401).json({
-                    error:{
-                        message:"User not authorised"
-                    }
-                })
-            }
     }
-    else
-    res.status(200).json({
-        message:"User login successful"
-    })
-    })
+       catch(err){ 
+        console.log(err)};
 }
