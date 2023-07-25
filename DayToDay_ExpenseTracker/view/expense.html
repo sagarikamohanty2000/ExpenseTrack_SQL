@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+        integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+        <link rel="stylesheet" href="../public/css/expense-styleSheet.css">
+    <title>Expense Tracker</title>
+</head>
+
+<body>
+    <header id="mainheader" class = "bg-info text-black p-3 mb-3">
+        <div class="container">
+            <div class="row">
+                <h2 id="header-title">Expense Tracker</h2>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+         <div id="main" class="card card-body">
+            <form action="#" onsubmit="myFunction(event)">
+                <h4 class="title">Add Expense</h4>
+                <div class="form-inline p-3 ">
+                <label for="expenseAmt" class="form-label">Expense amount</lable>
+                <input type="number" id="expenseAmt" name="expenseAmt" class="form-control-sm ">
+        
+                <label for="chooseDescription" class="form-label">Description</lable>
+                <input typr="text" id="chooseDescription" name="chooseDescription" class=" form-control-sm">
+        
+                <label for="chooseCategory" class="form-label mr-2">Choose category</label>
+                <select id="chooseCategory" name="chooseCategory" class="mr-5">
+                    <option value="movie">Movie</option>
+                    <option value="grocery">Grocery</option>
+                    <option value="fuel">Fuel</option>
+                    <option value="electricity">Electricity</option>
+                    <option value="clothing">Clothing</option>
+                </select>
+        
+                <input type="submit" id="submit" class="btn" value="Add Expense">
+         </div>
+            </form>
+              <h5 class="title">Expense list : </h5>
+              <ul id="expense-list" class="list-group">
+              </ul>
+         </div>
+    </div>
+  
+      <script src ="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+      <script src="../public/js/expense.js"></script>
+</body>
+
+</html>

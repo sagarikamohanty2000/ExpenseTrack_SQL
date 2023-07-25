@@ -1,0 +1,18 @@
+
+input{
+    margin-right: 10px;
+    margin-left: 10px
+}
+
+input.btn {
+    margin-top: 3px;
+    margin-left: 4px;
+    background-color:rgb(86, 84, 84); 
+    color: white; 
+    width: 150px;
+}
+
+
+.card{
+    background-color: rgb(221, 241, 249);
+}
