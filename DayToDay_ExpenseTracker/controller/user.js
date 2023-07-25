@@ -21,6 +21,7 @@ const User = require('../model/Users');
         }
         else {
             bcrypt.hash(password,10,async(err, hash) => {
+               try{
                 await User.create({
                     name : name,
                     email : email,
@@ -28,9 +29,9 @@ const User = require('../model/Users');
                 })
                     console.log('USER CREATED');
                     res.status(200).json({message : 'Successfully created new user'})
-                    
-                    .catch(err => 
-                        console.log(err));
+            } 
+                    catch(err){
+                        console.log(err)};
                     
                 })      
             }
@@ -46,8 +47,8 @@ exports.postUserLogin = async (req,res,next) => {
             bcrypt.compare(password, user[0].password, (err, response) => {
                 if(response === true)
                 {
-                   res.status(200).json({
-                       message:"User login successful"
+                   return res.status(200).json({
+                    message:"Successfully logged in"
                    })
                }
 

@@ -13,8 +13,8 @@ async function myFunction(event)
             }
             try {         
              const response = await axios.post("http://localhost:3000/user/login", obj);
-             console.log(response)
              alert("You have successully logged in");
+             window.location.href="../view/expense.html"
            
             }
              catch(err)  {
