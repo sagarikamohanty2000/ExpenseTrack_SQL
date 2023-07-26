@@ -23,7 +23,9 @@ exports.premiumLeaderBoard = async (req, res, next) => {
      users.forEach((user) => {
        userDeatils.push({name: user.name, expenseAmount: userExpense[user.id]})
      })
- 
+     userDeatils.sort((a,b) => 
+       b.expenseAmount - a.expenseAmount
+      )
      console.log(userDeatils);
      res.status(200).json(userDeatils);
      }
