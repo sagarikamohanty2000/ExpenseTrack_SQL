@@ -4,6 +4,7 @@ const sequelize = require('./util/database');
 
 const User = require('./model/Users');
 const Expense = require('./model/expense');
+const Order = require('./model/order');
 
 const app = express();
 const cors = require('cors');
@@ -16,6 +17,9 @@ app.use(expenseTrackerRoutes);
 
 User.hasMany(Expense);
 Expense.belongsTo(User,{constraints: true, onDelete: 'CASCADE'});
+
+User.hasMany(Order);
+Order.belongsTo(User,{constraints: true, onDelete: 'CASCADE'});
 
 sequelize.sync()
 .then(result => {
