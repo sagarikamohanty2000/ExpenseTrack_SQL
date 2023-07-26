@@ -18,13 +18,19 @@
                 <h2 id="header-title">Expense Tracker</h2>
                 <input type ="button" id="rzp-btn" class="btn-right" value="Buy Premium">
                 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+                <div id ='premium-user'></div>
+                </div>
             </div>
         </div>
     </header>
     <div class="container">
          <div id="main" class="card card-body">
-            <form action="#" onsubmit="myFunction(event)">
+            <form action="#">
+                
+                <div id="premium-feature">
+                </div>
                 <h4 class="title">Add Expense</h4>
+             
                 <div class="form-inline p-3 ">
                 <label for="expenseAmt" class="form-label">Expense amount</lable>
                 <input type="number" id="expenseAmt" name="expenseAmt" class="form-control-sm ">
@@ -48,6 +54,11 @@
               <ul id="expense-list" class="list-group">
               </ul>
          </div>
+            <div class="card card-body">
+            <ul id="leaderboard-user">
+            </ul>
+        </div>
+        
     </div>
   
       <script src ="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>

@@ -102,7 +102,7 @@ exports.getUserById = async (req,res,next) => {
         const id = req.params.userId;
         const user = await User.findAll({where : {id : id}})
         console.log("GET CALL");
-        console.log(user)
+        
       return res.send(user);
     }
     catch(err) { console.log(err)}

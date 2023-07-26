@@ -3,9 +3,15 @@
 //const Razorpay = require('razorpay');
 
 var ulTag = document.getElementById('expense-list');
+var ldTag = document.getElementById('leaderboard-user');
+var premiumTag = document.getElementById('premium-user');
+var premiumBtn = document.getElementById('rzp-btn');
+var leaderBoardBtn = document.createElement('button');
+var addExpenseBtn = document.getElementById('submit');
 const token = localStorage.getItem('token');
+
 //Submit Function
-async function myFunction(event) {
+addExpenseBtn.onclick = async function (event){
    event.preventDefault();
     alert("This Form is submited");
 
@@ -64,7 +70,7 @@ function showExpenseItemsOnScreen(obj)
     ulTag.appendChild(list);
 }
 
-document.getElementById('rzp-btn').onclick = async function (event)
+premiumBtn.onclick = async function (event)
 {
    const response = await axios.get('http://localhost:3000/purchase/premium',{headers: {"Authorization" : token}});
    var options = {
@@ -98,7 +104,7 @@ window.onload = (async () => {
    
    try {
    const response = await axios.get("http://localhost:3000/expense/get-expense" , {headers: {"Authorization" : token}});
-   console.log(token);
+
    disablePremiumBtnOnwindowLoad(response.data[0].userId);
    for(let i = 0 ; i<response.data.length; i++)
    {
@@ -124,16 +130,47 @@ async function disablePremiumBtnOnwindowLoad(userId) {
       if(response.data[0].isPremium === true){
          var buyPremiumBtn = document.getElementById('rzp-btn');
          buyPremiumBtn.className="btn-right-display";  
-     }
+         var para = document.createElement('p');
+         para.className = 'premium-class';
+         para.innerHTML= 'Premium User';
+         premiumTag.appendChild(para);
+         
+       
+         leaderBoardBtn.id="leaderBoard-btn";
+         leaderBoardBtn.className="btn2-right";
+         leaderBoardBtn.appendChild(document.createTextNode('Leaderboard'));
+         document.getElementById('premium-feature').appendChild(leaderBoardBtn)
+      }
    }
    catch (error)
    {
       console.log(error);
    }
+}
 
+leaderBoardBtn.onclick = async function (event){
+                     
+      try{
+       const response = await axios.get('http://localhost:3000/premium/leaderBoard', {headers: {"Authorization" : token}});
+       console.log(response);
+       ldTag.innerHTML += '<h3>Leader Board</h3>'
+      response.data.forEach((userInfro) => {
+         ldTag.innerHTML += `<li>Name : ${userInfro.name}  total Expense : ${userInfro.expenseAmount}`
+      })
+      //  {
+
+      //    var list = document.createElement('li');
+      //    list.className='leaderboard-list';
+      //    list.textContent = response[i].name+"  "+"total expense : "+response[i].expenseAmount;
+      //    ldTag.appendChild(list);
+      //  }
+      }
+      catch(error) {
+         console.log(error)
+      }
+   }
    // const user = User.findByPk({where : {userId :userId}} )
    // if(user.isPremium === true){
    // var buyPremiumBtn = document.getElementById('rzp-btn');
    // buyPremiumBtn.className="btn-right-display";
   // }
-}
