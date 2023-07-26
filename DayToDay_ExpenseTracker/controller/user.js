@@ -96,3 +96,14 @@ exports.postUserLogin = async (req,res,next) => {
        catch(err){ 
         console.log(err)};
 }
+
+exports.getUserById = async (req,res,next) => {
+    try {
+        const id = req.params.userId;
+        const user = await User.findAll({where : {id : id}})
+        console.log("GET CALL");
+        console.log(user)
+      return res.send(user);
+    }
+    catch(err) { console.log(err)}
+};

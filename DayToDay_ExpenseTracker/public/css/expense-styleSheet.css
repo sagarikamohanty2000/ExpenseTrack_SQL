@@ -10,6 +10,21 @@ input.btn {
     background-color:rgb(86, 84, 84); 
     color: white; 
     width: 150px;
+    border-radius: 4px;
+}
+
+.btn-right {
+    margin-top: 3px;
+    margin-left: auto;
+    border-radius: 8px;
+    background-color:rgb(34, 35, 35); 
+    color: rgb(255, 255, 255); 
+    width: 150px;
+    float: right;
+    order: 2;
+}
+.btn-right-display {
+    display: none;
 }
 
 

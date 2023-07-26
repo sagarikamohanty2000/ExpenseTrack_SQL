@@ -24,7 +24,8 @@
         margin-left: 25px;
         background-color:rgb(86, 84, 84); 
         color: white; 
-        width: 100px
+        width: 100px;
+        border-radius: 4px;
     }
 
     input.btn-2 {
@@ -32,7 +33,12 @@
         margin-left: 300px;
         background-color:rgb(86, 84, 84); 
         color: white; 
-        width: 100px
+        width: 100px;
+        border-radius: 4px;
+        float : right;
+        order: 2;
+
+
     }
     label.form-label-email{
         margin-top: 25px;

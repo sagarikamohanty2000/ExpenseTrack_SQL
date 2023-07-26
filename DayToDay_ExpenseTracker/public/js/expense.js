@@ -1,4 +1,7 @@
 
+//const User = require('../model/Users');
+//const Razorpay = require('razorpay');
+
 var ulTag = document.getElementById('expense-list');
 const token = localStorage.getItem('token');
 //Submit Function
@@ -61,14 +64,42 @@ function showExpenseItemsOnScreen(obj)
     ulTag.appendChild(list);
 }
 
+document.getElementById('rzp-btn').onclick = async function (event)
+{
+   const response = await axios.get('http://localhost:3000/purchase/premium',{headers: {"Authorization" : token}});
+   var options = {
+      "key": response.data.key_id,
+      "order_id": response.data.order.id,
+      "handler" : async function (response) {
+         await axios.post('http://localhost:3000/purchase/updateTransaction',{
+         order_id: options.order_id,
+         payment_id: response.razorpay_payment_id,
+         }, {headers : {"Authorization" : token}});
 
+         alert('You are a Premium User now');
+         
+         disableThePremiumBtn();
+      }
+   };
+
+   const rzp1 = new Razorpay(options);
+   rzp1.open();
+   e.preventDefault();
+
+
+   rzp1.on('payment.failed', function (response){
+      console.log(response)
+      alert('Something went wrong');
+   });
+}
 
 //Populate the Data from Local Storage onto The screen on Screen Refresh
 window.onload = (async () => {
-
+   
    try {
    const response = await axios.get("http://localhost:3000/expense/get-expense" , {headers: {"Authorization" : token}});
    console.log(token);
+   disablePremiumBtnOnwindowLoad(response.data[0].userId);
    for(let i = 0 ; i<response.data.length; i++)
    {
       showExpenseItemsOnScreen(response.data[i]);
@@ -81,3 +112,28 @@ catch (error)
    
 })
     
+function disableThePremiumBtn() {
+   var buyPremiumBtn = document.getElementById('rzp-btn');
+   buyPremiumBtn.className="btn-right-display";
+}
+
+async function disablePremiumBtnOnwindowLoad(userId) {
+   try {
+      const response = await axios.get(`http://localhost:3000/user/UserById/${userId}`, {headers: {"Authorization" : token}});
+      
+      if(response.data[0].isPremium === true){
+         var buyPremiumBtn = document.getElementById('rzp-btn');
+         buyPremiumBtn.className="btn-right-display";  
+     }
+   }
+   catch (error)
+   {
+      console.log(error);
+   }
+
+   // const user = User.findByPk({where : {userId :userId}} )
+   // if(user.isPremium === true){
+   // var buyPremiumBtn = document.getElementById('rzp-btn');
+   // buyPremiumBtn.className="btn-right-display";
+  // }
+}

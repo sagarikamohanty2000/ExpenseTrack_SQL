@@ -26,6 +26,7 @@ exports.getAllExpense = async (req,res,next) => {
     try {
     const expenses = await Expense.findAll({where : {userId : req.user.id}})
         console.log("GET CALL");
+        console.log(expenses)
       return res.send(expenses);
     }
     catch(err) { console.log(err)}
