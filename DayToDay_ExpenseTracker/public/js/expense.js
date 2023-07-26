@@ -155,7 +155,7 @@ leaderBoardBtn.onclick = async function (event){
        console.log(response);
        ldTag.innerHTML += '<h3>Leader Board</h3>'
       response.data.forEach((userInfro) => {
-         ldTag.innerHTML += `<li>Name : ${userInfro.name}  total Expense : ${userInfro.expenseAmount}`
+         ldTag.innerHTML += `<li>Name : ${userInfro.name} -  Total Expense : ${userInfro.total_expense}`
       })
       //  {
 
