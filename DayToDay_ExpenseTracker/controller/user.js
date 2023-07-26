@@ -1,5 +1,6 @@
 
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const User = require('../model/Users');
 
@@ -15,6 +16,7 @@ const User = require('../model/Users');
             console.log('USER ALREADY EXISTS');
             res.status(401).json({
                 error: {
+                    success: "false",
                     message: "User already exists"
                 }
             })
@@ -28,7 +30,9 @@ const User = require('../model/Users');
                     password : hash
                 })
                     console.log('USER CREATED');
-                    res.status(200).json({message : 'Successfully created new user'})
+                    res.status(200).json({
+                        success: "true",
+                        message : 'Successfully created new user'})
             } 
                     catch(err){
                         console.log(err)};
@@ -36,6 +40,10 @@ const User = require('../model/Users');
                 })      
             }
 }
+
+ function generateAccessToken(id){
+    return jwt.sign({id : id},'secretKey');
+ }
 
 exports.postUserLogin = async (req,res,next) => {
     const email = req.body.femail;
@@ -48,7 +56,9 @@ exports.postUserLogin = async (req,res,next) => {
                 if(response === true)
                 {
                    return res.status(200).json({
-                    message:"Successfully logged in"
+                    success: "true",
+                    message:"Successfully logged in",
+                    token: generateAccessToken(user[0].id)
                    })
                }
 
@@ -56,6 +66,7 @@ exports.postUserLogin = async (req,res,next) => {
                 console.log("Something went wrong")
                 res.status(500).json({
                     error:{
+                        success: "false",
                         message:"Something went wrong"
                     }
                 })
@@ -64,6 +75,7 @@ exports.postUserLogin = async (req,res,next) => {
                     console.log("User not authorised")
                     res.status(401).json({
                        error:{
+                           success: "false",
                            message:"User not authorised"
                        }
                    }) 
@@ -75,6 +87,7 @@ exports.postUserLogin = async (req,res,next) => {
             console.log("User not found")
             res.status(404).json({
             error:{
+                success: "false",
                 message:"User not found"
             }
         })

@@ -1,6 +1,6 @@
 
 var ulTag = document.getElementById('expense-list');
-
+const token = localStorage.getItem('token');
 //Submit Function
 async function myFunction(event) {
    event.preventDefault();
@@ -9,15 +9,15 @@ async function myFunction(event) {
     var amt = document.getElementById('expenseAmt').value;
     var description = document.getElementById('chooseDescription').value;
     var category = document.getElementById('chooseCategory').value;
-
+   
         var obj =
         {
             amt,
             description,
-            category
+            category,
         }
         try {   
-        const response = await axios.post("http://localhost:3000/expense/add-expense",obj);
+        const response = await axios.post("http://localhost:3000/expense/add-expense",obj,{headers: {"Authorization" : token}});
         console.log(response);    
         }
 
@@ -41,8 +41,9 @@ function showExpenseItemsOnScreen(obj)
 
       if(confirm('Do you want to delete ? '))
             {
+               
                try{
-                const response = await axios.delete(`http://localhost:3000/expense/delete/${obj.id}`);
+                const response = await axios.delete(`http://localhost:3000/expense/delete/${obj.id}`, {headers: {"Authorization" : token}});
                 console.log(response);
                 var deleteli = document.getElementById(`${obj.id}`);
                 ulTag.removeChild(deleteli);
@@ -64,8 +65,10 @@ function showExpenseItemsOnScreen(obj)
 
 //Populate the Data from Local Storage onto The screen on Screen Refresh
 window.onload = (async () => {
+
    try {
-   const response = await axios.get("http://localhost:3000/expense/get-expense");
+   const response = await axios.get("http://localhost:3000/expense/get-expense" , {headers: {"Authorization" : token}});
+   console.log(token);
    for(let i = 0 ; i<response.data.length; i++)
    {
       showExpenseItemsOnScreen(response.data[i]);

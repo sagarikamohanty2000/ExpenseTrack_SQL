@@ -3,7 +3,6 @@
 async function myFunction(event)    
 {
     event.preventDefault();
-            alert("The form is submited");
             var femail = document.getElementById('femail').value;
             var fpassword = document.getElementById('fpassword').value;
 
@@ -14,6 +13,7 @@ async function myFunction(event)
             try {         
              const response = await axios.post("http://localhost:3000/user/login", obj);
              alert("You have successully logged in");
+             localStorage.setItem('token',response.data.token);
              window.location.href="../view/expense.html"
            
             }
