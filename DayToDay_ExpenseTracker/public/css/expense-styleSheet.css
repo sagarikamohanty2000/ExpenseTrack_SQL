@@ -9,7 +9,7 @@ input.btn {
     margin-left: 4px;
     background-color:rgb(86, 84, 84); 
     color: white; 
-    width: 150px;
+    width: 120px;
     border-radius: 4px;
 }
 
@@ -23,6 +23,18 @@ input.btn {
     float: right;
     order: 2;
 }
+
+.btn2-right {
+    margin-top: 0px;
+    margin-left: auto;
+    border-radius: 4px;
+    background-color:rgb(34, 35, 35); 
+    color: rgb(255, 255, 255); 
+    width: 140px;
+    height: 33px;
+    float: right;
+    order: 2;
+}
 .btn-right-display {
     display: none;
 }
@@ -30,4 +42,11 @@ input.btn {
 
 .card{
     background-color: rgb(221, 241, 249);
+}
+
+.premium-class{
+    padding-left: 15px;
+    margin-left : 700px;
+    margin-top: 5px;
+    font-size: x-large;
 }
