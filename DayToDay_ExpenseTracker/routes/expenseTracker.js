@@ -27,6 +27,10 @@ router.get('/purchase/premium',userAuthentication.authenticate,purchaseControlle
 
 router.get('/premium/leaderBoard',userAuthentication.authenticate,premiumController.premiumLeaderBoard);
 
-router.post('/password/forgotpassword',userAuthentication.authenticate,passwordController.forgotPwdEmail);
+router.post('/password/forgotpassword',passwordController.forgotPwdEmail);
+
+router.get('/password/resetpassword/:uniqueId',passwordController.resetPassword);
+
+router.get('/password/updateNewPassword/:uniqueId',passwordController.updateNewPassword);
 
 module.exports = router;
