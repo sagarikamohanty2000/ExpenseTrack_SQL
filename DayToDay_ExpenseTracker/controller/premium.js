@@ -7,15 +7,7 @@ exports.premiumLeaderBoard = async (req, res, next) => {
 
     try {
      const leadBoardUsers = await User.findAll({
-      attributes : ['id', 'name', [Sequelize.fn('sum', Sequelize.col('expenses.amount')), 'total_expense']],
-      include: [
-        {
-            model: Expense,
-            attributes: []
-        }
-      ],
-      group: ['user.id'],
-      order:[['total_expense', 'DESC']]
+      order:[['totalExpense', 'DESC']]
      })
     
      res.status(200).json(leadBoardUsers);

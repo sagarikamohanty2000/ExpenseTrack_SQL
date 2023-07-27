@@ -1,4 +1,5 @@
 const Expense = require('../model/expense');
+const User = require('../model/Users');
 
 exports.postAddExpense = async (req,res,next)=>{
     const amount = req.body.amt;
@@ -11,16 +12,45 @@ exports.postAddExpense = async (req,res,next)=>{
         description: description,
         category: category,
         userId: userId
-    })
-     console.log("EXPENSE ADDED")
-     res.status(200).json({
+    }).then((result) => {
+        const expense = Number(req.user.totalExpense) + Number(amount);
+    // })
+    // const oldExpense = await User.findOne({ 
+    //     where : {id : userId},
+    //     attributes : ['totalExpense']
+    // })
+    //         console.log("OLD EXPENSE >>>>>>>>>>>>>>>>>>>>>>>>>>>>"+oldExpense);
+    //         let expense = 0; 
+    //         if(oldExpense === undefined || oldExpense === null)
+    //         {
+    //         expense = amount; 
+    //         }
+    //         else{
+    //             expense = oldExpense+ amount;
+    //             }
+         console.log("EXPENSE ADDED")
+         console.log("EXPENSE AMOUNT >>>> "+expense);
+         User.findOne({where: {id : userId}}).then((user) =>{
+            user.update({totalExpense: expense}).then(()=>{
+                console.log("Expense updated");  
+                return res.status(200).json({success :  true});  
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+         })
+         .catch((err) => {
+             console.log(err);
+         })
+
+            res.status(200).json({
             success: true,
             message:"Successfully added expense "
     })
+})
+   }
+    catch(err) { console.log(err)}
 }
-    catch(err) { 
-        console.log(err)}
-};
 
 exports.getAllExpense = async (req,res,next) => {
     try {

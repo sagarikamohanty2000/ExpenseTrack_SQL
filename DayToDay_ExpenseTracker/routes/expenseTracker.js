@@ -12,7 +12,7 @@ router.post('/user/signIn',userController.postUserSignin);
 
 router.post('/user/login',userController.postUserLogin);
 
-router.get('/user/UserById/:userId',userController.getUserById);
+router.get('/user/UserByToken',userAuthentication.authenticate,userController.getUserByToken);
 
 router.post('/expense/add-expense',userAuthentication.authenticate,expenseController.postAddExpense);
 
