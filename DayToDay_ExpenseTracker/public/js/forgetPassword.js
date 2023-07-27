@@ -1,5 +1,4 @@
 
-const token = localStorage.getItem('token');
 async function myFunction(event)    
 {
     event.preventDefault();
@@ -10,7 +9,7 @@ async function myFunction(event)
                 femail
             }
             try {         
-             const response = await axios.post("http://localhost:3000/password/forgotpassword", obj,{headers: {"Authorization" : token}});
+             const response = await axios.post("http://localhost:3000/password/forgotpassword", obj,);
              console.log(response)
            
             }
