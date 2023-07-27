@@ -105,7 +105,7 @@ window.onload = (async () => {
    try {
    const response = await axios.get("http://localhost:3000/expense/get-expense" , {headers: {"Authorization" : token}});
 
-   disablePremiumBtnOnwindowLoad(response.data[0].userId);
+   disablePremiumBtnOnwindowLoad(token);
    for(let i = 0 ; i<response.data.length; i++)
    {
       showExpenseItemsOnScreen(response.data[i]);
@@ -123,11 +123,11 @@ function disableThePremiumBtn() {
    buyPremiumBtn.className="btn-right-display";
 }
 
-async function disablePremiumBtnOnwindowLoad(userId) {
+async function disablePremiumBtnOnwindowLoad(token) {
    try {
-      const response = await axios.get(`http://localhost:3000/user/UserById/${userId}`, {headers: {"Authorization" : token}});
-      
-      if(response.data[0].isPremium === true){
+      const response = await axios.get('http://localhost:3000/user/UserByToken/', {headers: {"Authorization" : token}});
+      console.log("PREMIUM >>>>>>>>>>>>>>>>>>>>>> "+ response.data);
+      if(response.data.isPremium === true){
          var buyPremiumBtn = document.getElementById('rzp-btn');
          buyPremiumBtn.className="btn-right-display";  
          var para = document.createElement('p');
@@ -155,7 +155,7 @@ leaderBoardBtn.onclick = async function (event){
        console.log(response);
        ldTag.innerHTML += '<h3>Leader Board</h3>'
       response.data.forEach((userInfro) => {
-         ldTag.innerHTML += `<li>Name : ${userInfro.name} -  Total Expense : ${userInfro.total_expense}`
+         ldTag.innerHTML += `<li>Name : ${userInfro.name} -  Total Expense : ${userInfro.totalExpense}`
       })
       //  {
 

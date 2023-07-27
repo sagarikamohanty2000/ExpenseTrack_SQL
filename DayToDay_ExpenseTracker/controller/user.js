@@ -97,12 +97,11 @@ exports.postUserLogin = async (req,res,next) => {
         console.log(err)};
 }
 
-exports.getUserById = async (req,res,next) => {
+exports.getUserByToken = async (req,res,next) => {
     try {
-        const id = req.params.userId;
-        const user = await User.findAll({where : {id : id}})
+        const id = req.user.id;
+        const user = await User.findOne({where : {id : id}})
         console.log("GET CALL");
-        
       return res.send(user);
     }
     catch(err) { console.log(err)}
