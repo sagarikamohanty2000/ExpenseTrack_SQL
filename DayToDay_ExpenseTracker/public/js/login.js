@@ -1,6 +1,10 @@
 
+const loginBtn = document.getElementById('submit');
+const signupBtn = document.getElementById('submitSignUp');
+const forgetPwdBtn = document.getElementById('forgotPassword');
 
-async function myFunction(event)    
+
+loginBtn.onclick = async function(event)    
 {
     event.preventDefault();
             var femail = document.getElementById('femail').value;
@@ -20,4 +24,16 @@ async function myFunction(event)
              catch(err)  {
                 this.errorMessage = err.message;
                 alert("Username or Password is invalid")};
+}
+
+signupBtn.onclick = async function(event)
+{
+    event.preventDefault();
+    window.location.href="../view/signUp.html"
+}
+
+forgetPwdBtn.onclick = async function(event)
+{
+    event.preventDefault();
+    window.location.href="../view/forgetPwd.html"
 }
