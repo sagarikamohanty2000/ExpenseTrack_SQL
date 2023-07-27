@@ -4,6 +4,7 @@ const userController = require('../controller/user');
 const expenseController = require('../controller/expense');
 const purchaseController = require('../controller/purchase');
 const premiumController = require('../controller/premium');
+const passwordController = require('../controller/password');
 const userAuthentication = require('../middleware/auth');
 
 const router = express.Router();
@@ -25,5 +26,7 @@ router.post('/purchase/updateTransaction',userAuthentication.authenticate,purcha
 router.get('/purchase/premium',userAuthentication.authenticate,purchaseController.premiumPurchase);
 
 router.get('/premium/leaderBoard',userAuthentication.authenticate,premiumController.premiumLeaderBoard);
+
+router.post('/password/forgotpassword',userAuthentication.authenticate,passwordController.forgotPwdEmail);
 
 module.exports = router;

@@ -4,7 +4,7 @@
     border-width: 2px;
     border-style : solid;
     border-color : #292929;
-    height : 280px;
+    height : 320px;
     width : 565px;
     margin:auto;
     border-radius: 10px;
@@ -20,25 +20,23 @@
         margin-top: 4px;
     }
     input.btn {
-        margin-top: 30px;
+        margin-top: 60px;
         margin-left: 25px;
         background-color:rgb(86, 84, 84); 
         color: white; 
-        width: 100px;
+        width: 150px;
         border-radius: 4px;
     }
 
-    input.btn-2 {
-        margin-top: 30px;
-        margin-left: 300px;
+   
+    input.btn-forgotPwd{
+        margin-top: 60px;
+        margin-left: 25px;
         background-color:rgb(86, 84, 84); 
         color: white; 
-        width: 100px;
+        width: 150px;
+        height: 38px;
         border-radius: 4px;
-        float : right;
-        order: 2;
-
-
     }
     label.form-label-email{
         margin-top: 25px;

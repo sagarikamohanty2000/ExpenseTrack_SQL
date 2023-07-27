@@ -6,7 +6,7 @@
     border-width: 2px;
     border-style : solid;
     border-color : #292929;
-    height : 350px;
+    height : 400px;
     width : 565px;
     margin:auto;
     border-radius: 10px;
@@ -22,11 +22,11 @@
         margin-top: 4px;
     }
     input.btn {
-        margin-top: 30px;
+        margin-top: 60px;
         margin-left: 25px;
         background-color:rgb(86, 84, 84); 
         color: white; 
-        width: 100px;
+        width: 150px;
         border-radius: 4px;
     }
     label.form-label-name{
