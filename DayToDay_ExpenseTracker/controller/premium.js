@@ -3,7 +3,7 @@ const Expense = require('../model/expense');
 const User = require('../model/Users');
 
 
-exports.premiumLeaderBoard = async (req, res, next) => {
+const premiumLeaderBoard = async (req, res, next) => {
 
     try {
      const leadBoardUsers = await User.findAll({
@@ -15,4 +15,8 @@ exports.premiumLeaderBoard = async (req, res, next) => {
     catch(err) {
      console.log(err);
     }
+ }
+
+ module.exports = {
+    premiumLeaderBoard
  }
