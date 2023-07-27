@@ -1,16 +1,17 @@
-
+const sequelize = require('../util/database');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const User = require('../model/Users');
 
- exports.postUserSignin = async (req, res, next) =>
+const postUserSignin = async (req, res, next) =>
 {
+    const t = await sequelize.transaction();
     const name = req.body.fname;
     const email = req.body.femail;
     const password = req.body.fpassword;
 
-   const user = await User.findAll({where : {email}})
+   const user = await User.findAll({where : {email},})
         if(user.length > 0)
         {
             console.log('USER ALREADY EXISTS');
@@ -27,14 +28,18 @@ const User = require('../model/Users');
                 await User.create({
                     name : name,
                     email : email,
-                    password : hash
+                    password : hash,
+                    transaction: t
+
                 })
                     console.log('USER CREATED');
+                    await t.commit();
                     res.status(200).json({
-                        success: "true",
-                        message : 'Successfully created new user'})
+                    success: "true",
+                    message : 'Successfully created new user'})
             } 
                     catch(err){
+                        await t.rollback();
                         console.log(err)};
                     
                 })      
@@ -45,7 +50,7 @@ const User = require('../model/Users');
     return jwt.sign({id : id},'secretKey');
  }
 
-exports.postUserLogin = async (req,res,next) => {
+const postUserLogin = async (req,res,next) => {
     const email = req.body.femail;
     const password = req.body.fpassword;
  
@@ -97,7 +102,7 @@ exports.postUserLogin = async (req,res,next) => {
         console.log(err)};
 }
 
-exports.getUserByToken = async (req,res,next) => {
+const getUserByToken = async (req,res,next) => {
     try {
         const id = req.user.id;
         const user = await User.findOne({where : {id : id}})
@@ -106,3 +111,9 @@ exports.getUserByToken = async (req,res,next) => {
     }
     catch(err) { console.log(err)}
 };
+
+module.exports = {
+    postUserSignin,
+    postUserLogin,
+    getUserByToken
+}

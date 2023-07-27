@@ -1,58 +1,48 @@
+const sequelize = require('../util/database');
+
 const Expense = require('../model/expense');
 const User = require('../model/Users');
 
-exports.postAddExpense = async (req,res,next)=>{
+const postAddExpense = async (req,res,next)=>{
+    
+    const t = await sequelize.transaction();
+    
     const amount = req.body.amt;
     const description = req.body.description;
     const category = req.body.category;
     const userId = req.user.id;
    try{
-    await Expense.create({
+        await Expense.create({
         amount: amount,
         description: description,
         category: category,
-        userId: userId
-    }).then((result) => {
-        const expense = Number(req.user.totalExpense) + Number(amount);
-    // })
-    // const oldExpense = await User.findOne({ 
-    //     where : {id : userId},
-    //     attributes : ['totalExpense']
-    // })
-    //         console.log("OLD EXPENSE >>>>>>>>>>>>>>>>>>>>>>>>>>>>"+oldExpense);
-    //         let expense = 0; 
-    //         if(oldExpense === undefined || oldExpense === null)
-    //         {
-    //         expense = amount; 
-    //         }
-    //         else{
-    //             expense = oldExpense+ amount;
-    //             }
-         console.log("EXPENSE ADDED")
-         console.log("EXPENSE AMOUNT >>>> "+expense);
-         User.findOne({where: {id : userId}}).then((user) =>{
-            user.update({totalExpense: expense}).then(()=>{
+        userId: userId,
+        transaction: t
+    })
+            const expense = Number(req.user.totalExpense) + Number(amount);
+            User.update({
+                totalExpense: expense},
+                {where: {id : userId}, 
+                transaction: t
+            }).then(async()=>{
+                await t.commit();
                 console.log("Expense updated");  
-                return res.status(200).json({success :  true});  
             })
-            .catch((err) => {
+            .catch(async (err) => {
+                await t.rollback();
                 console.log(err);
             })
-         })
-         .catch((err) => {
-             console.log(err);
-         })
-
             res.status(200).json({
             success: true,
             message:"Successfully added expense "
-    })
-})
+            })
+   
    }
-    catch(err) { console.log(err)}
+    catch(err) { 
+        console.log(err)}
 }
 
-exports.getAllExpense = async (req,res,next) => {
+const getAllExpense = async (req,res,next) => {
     try {
     const expenses = await Expense.findAll({where : {userId : req.user.id}})
         console.log("GET CALL");
@@ -61,11 +51,14 @@ exports.getAllExpense = async (req,res,next) => {
     catch(err) { console.log(err)}
 };
 
-exports.deleteExpenseById = async (req,res,next) =>{
+const deleteExpenseById = async (req,res,next) =>{
+    
+    const t = await sequelize.transaction();
     const exId = req.params.expenseId;
     if(exId == undefined || exId.length === 0)
-    {
-        res.status(400).json({
+    {      
+            await t.rollback();
+            res.status(400).json({
             error : {
             success: false,
             message:"No such item exists"
@@ -76,12 +69,41 @@ exports.deleteExpenseById = async (req,res,next) =>{
    // const deleteExpense = await Expense.findAll({where : {id:exId, userId: req.user.id}})
      //   console.log(deleteExpense);
         //const result = await (deleteExpense[0].destroy());
-        await Expense.destroy({where : {id:exId, userId: req.user.id}})
+        await Expense.destroy({where : {id:exId, userId: req.user.id}, transaction: t})
         console.log("DESTROYED EXPENSE");
-       res.status(200).json({
+
+            Expense.findAll({where: {id: exId}}).then((deleteExpenseInfo) => {
+        
+                const verifiedExpense = Number(req.user.totalExpense) - Number(deleteExpenseInfo[0].amount);
+   
+            User.update({
+                totalExpense : verifiedExpense},
+                 {where: {id : req.user.id}, 
+                 transaction: t
+                }).then(async()=>{
+                    await t.commit();
+                    console.log("totalExpense updated after Deletion");  
+                })
+                .catch(async (err) => {
+                    await t.rollback();
+                    console.log(err);
+                })
+        })
+        .catch(async (err) => {
+            await t.rollback();
+            console.log(err);
+        })
+        res.status(200).json({
         success: true,
         message:"Successfully deleted "
 })
     }
     catch(err){console.log(err)}
+}
+
+
+module.exports = {
+    postAddExpense,
+    getAllExpense,
+    deleteExpenseById
 }
