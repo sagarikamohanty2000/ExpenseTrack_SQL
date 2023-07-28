@@ -6,6 +6,7 @@ var ulTag = document.getElementById('expense-list');
 var ldTag = document.getElementById('leaderboard-user');
 var premiumTag = document.getElementById('premium-user');
 var fileHistoryTag = document.getElementById('file-history');
+var pagination = document.getElementById('pagination');
 var premiumBtn = document.getElementById('rzp-btn');
 var leaderBoardBtn = document.createElement('button');
 var addExpenseBtn = document.getElementById('submit');
@@ -37,41 +38,79 @@ addExpenseBtn.onclick = async function (event){
         catch (error) {
             console.log(error);
         }
-     showExpenseItemsOnScreen(obj);
+        printTheListForAddExpense(obj);
 }
 
 function showExpenseItemsOnScreen(obj)
-{
+{  
+      ulTag.innerHTML='';
+      for(let i = 0 ; i<obj.length; i++)
+         {
+            var list = document.createElement('li');
+            list.className="list-group-item";
+            list.id=`${obj[i].id}`;
+            
+            //Delete Button
+            var deleteBtn = document.createElement('button');
+            deleteBtn.className="btn btn-sm delete ml-10 mr-10 float-right";
+            deleteBtn.appendChild(document.createTextNode('Delete'));
+            deleteBtn.onclick = (async () => {
+
+               if(confirm('Do you want to delete ? '))
+                     {
+                        
+                        try{
+                        const response = await axios.delete(`http://localhost:3000/expense/delete/${obj[i].id}`, {headers: {"Authorization" : token}});
+                        console.log(response);
+                        var deleteli = document.getElementById(`${obj[i].id}`);
+                        ulTag.removeChild(deleteli);
+                        }
+                        catch(error) {
+                           console.log(error)
+                        }
+                     }
+               })
+
+            //Data ShowCased on the screen
+            list.textContent = obj[i].amount+" "+obj[i].description+" "+obj[i].category+" ";
+            list.appendChild(deleteBtn);
+
+            ulTag.appendChild(list);
+      }
+   }
+
+
+function printTheListForAddExpense(obj){
    var list = document.createElement('li');
    list.className="list-group-item";
    list.id=`${obj.id}`;
    
-    //Delete Button
-    var deleteBtn = document.createElement('button');
-    deleteBtn.className="btn btn-sm delete ml-10 mr-10 float-right";
-    deleteBtn.appendChild(document.createTextNode('Delete'));
-    deleteBtn.onclick = (async () => {
+   //Delete Button
+   var deleteBtn = document.createElement('button');
+   deleteBtn.className="btn btn-sm delete ml-10 mr-10 float-right";
+   deleteBtn.appendChild(document.createTextNode('Delete'));
+   deleteBtn.onclick = (async () => {
 
       if(confirm('Do you want to delete ? '))
             {
                
                try{
-                const response = await axios.delete(`http://localhost:3000/expense/delete/${obj.id}`, {headers: {"Authorization" : token}});
-                console.log(response);
-                var deleteli = document.getElementById(`${obj.id}`);
-                ulTag.removeChild(deleteli);
+               const response = await axios.delete(`http://localhost:3000/expense/delete/${obj.id}`, {headers: {"Authorization" : token}});
+               console.log(response);
+               var deleteli = document.getElementById(`${obj.id}`);
+               ulTag.removeChild(deleteli);
                }
                catch(error) {
                   console.log(error)
                }
             }
-       })
+      })
 
-    //Data ShowCased on the screen
-    list.textContent = obj.amount+" "+obj.description+" "+obj.category+" ";
-    list.appendChild(deleteBtn);
+   //Data ShowCased on the screen
+   list.textContent = obj.amount+" "+obj.description+" "+obj.category+" ";
+   list.appendChild(deleteBtn);
 
-    ulTag.appendChild(list);
+   ulTag.appendChild(list);
 }
 
 premiumBtn.onclick = async function (event)
@@ -105,22 +144,62 @@ premiumBtn.onclick = async function (event)
 
 //Populate the Data from Local Storage onto The screen on Screen Refresh
 window.onload = (async () => {
-   
+   const page = 1;
    try {
-   const response = await axios.get("http://localhost:3000/expense/get-expense" , {headers: {"Authorization" : token}});
-
-   disablePremiumBtnOnwindowLoad(token);
-   for(let i = 0 ; i<response.data.length; i++)
-   {
-      showExpenseItemsOnScreen(response.data[i]);
+      const response = await axios.get(`http://localhost:3000/expense/get-expense?page=${page}` , {headers: {"Authorization" : token}});
+      disablePremiumBtnOnwindowLoad(token);
+      console.log(response.data.expenseData.length);
+      
+         showExpenseItemsOnScreen(response.data.expenseData);
+      showPagination(response.data);
    }
-}
-catch (error)
-{
-   console.log(error);
-}
+   catch (error)
+   {
+      console.log(error);
+   }
    
 })
+
+function showPagination({
+   currentPage,
+   hasNextPage,
+   nextPage,
+   hasPreviousPage,
+   lastPage,
+}){
+   pagination.innerHTML ='';
+   if(hasPreviousPage){
+      const btn2 = document.createElement('button')
+      btn2.innerHTML = hasPreviousPage
+      btn2.addEventListener('click', () => getExpenses(hasPreviousPage))
+      pagination.appendChild(btn2)
+   }
+
+      const btn1 = document.createElement('button')
+      btn1.innerHTML = `<h3>${currentPage}</h3>`
+      btn1.addEventListener('click', () => getExpenses(currentPage))
+      pagination.appendChild(btn1)
+      
+      if(hasNextPage){
+         const btn3 = document.createElement('button')
+         btn3.innerHTML = nextPage
+         btn3.addEventListener('click', () => getExpenses(nextPage))
+         pagination.appendChild(btn3)
+      }
+   }
+
+  async function getExpenses(page)
+   { 
+      try{
+         const response = await axios.get(`http://localhost:3000/expense/get-expense?page=${page}` , {headers: {"Authorization" : token}}); 
+            showExpenseItemsOnScreen(response.data.expenseData);
+         showPagination(response.data);
+      }
+      catch(err){
+         console.log(err)
+      }
+}
+
     
 function disableThePremiumBtn() {
    var buyPremiumBtn = document.getElementById('rzp-btn');
@@ -130,7 +209,7 @@ function disableThePremiumBtn() {
 async function disablePremiumBtnOnwindowLoad(token) {
    try {
       const response = await axios.get('http://localhost:3000/user/UserByToken/', {headers: {"Authorization" : token}});
-      console.log("PREMIUM >>>>>>>>>>>>>>>>>>>>>> "+ response.data);
+
       if(response.data.isPremium === true){
          var buyPremiumBtn = document.getElementById('rzp-btn');
          buyPremiumBtn.className="btn-right-display";  
