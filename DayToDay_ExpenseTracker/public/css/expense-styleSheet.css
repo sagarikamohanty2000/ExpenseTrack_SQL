@@ -64,5 +64,10 @@ input.btn {
 }
 
 .paging{
-    margin-left: 500px;
+    margin-left: 300px;
+}
+
+input.rows-per-page{
+    margin-top: 0px;
+    width:50px;
 }

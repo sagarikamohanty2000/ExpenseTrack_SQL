@@ -1,3 +1,4 @@
+
 const sequelize = require('../util/database');
 
 const Expense = require('../model/expense');
@@ -45,10 +46,11 @@ const postAddExpense = async (req,res,next)=>{
 }
 
 const getAllExpense = async (req,res,next) => {
-
+   
+    const showItem = Number(req.header('Showitem'));
     try {
         const page = +req.query.page || 1;
-        const LIST_PER_PAGE = 10;
+        const LIST_PER_PAGE =showItem;
         const expenses = await Expense.findAll({where : {userId : req.user.id},
             offset: (page-1) * LIST_PER_PAGE,
             limit: LIST_PER_PAGE
