@@ -39,6 +39,18 @@ input.btn {
     display: none;
 }
 
+.btn-download {
+    margin-top: 0px;
+    margin-left: auto;
+    border-radius: 12px;
+    background-color:rgb(34, 35, 35); 
+    color: rgb(255, 255, 255); 
+    width: 140px;
+    height:33px;
+    float: right;
+    order: 2;
+}
+
 
 .card{
     background-color: rgb(221, 241, 249);
