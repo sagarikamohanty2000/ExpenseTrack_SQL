@@ -45,10 +45,24 @@ const postAddExpense = async (req,res,next)=>{
 }
 
 const getAllExpense = async (req,res,next) => {
+
     try {
-    const expenses = await Expense.findAll({where : {userId : req.user.id}})
+        const page = +req.query.page || 1;
+        const LIST_PER_PAGE = 10;
+        const expenses = await Expense.findAll({where : {userId : req.user.id},
+            offset: (page-1) * LIST_PER_PAGE,
+            limit: LIST_PER_PAGE
+         })
+        let totalItems = await Expense.count({where : {userId : req.user.id}});
         console.log("GET CALL");
-      return res.send(expenses);
+        return res.status(200).json({
+            expenseData: expenses,
+            currentPage: page,
+            hasNextPage: LIST_PER_PAGE*page < totalItems,
+            nextPage: page + 1,
+            hasPreviousPage: page - 1,
+            lastPage: Math.ceil(totalItems/ LIST_PER_PAGE) 
+    });
     }
     catch(err) { console.log(err)}
 };
@@ -68,9 +82,7 @@ const deleteExpenseById = async (req,res,next) =>{
         })
     }
     try{
-   // const deleteExpense = await Expense.findAll({where : {id:exId, userId: req.user.id}})
-     //   console.log(deleteExpense);
-        //const result = await (deleteExpense[0].destroy());
+
         await Expense.destroy({where : {id:exId, userId: req.user.id}, transaction: t})
         console.log("DESTROYED EXPENSE");
 
