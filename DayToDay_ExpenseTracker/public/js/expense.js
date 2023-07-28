@@ -5,9 +5,13 @@
 var ulTag = document.getElementById('expense-list');
 var ldTag = document.getElementById('leaderboard-user');
 var premiumTag = document.getElementById('premium-user');
+var fileHistoryTag = document.getElementById('file-history');
 var premiumBtn = document.getElementById('rzp-btn');
 var leaderBoardBtn = document.createElement('button');
 var addExpenseBtn = document.getElementById('submit');
+var downloadFileBtn = document.getElementById('download-btn');
+var downloadFileHistoryBtn = document.getElementById('download-file-history');
+
 const token = localStorage.getItem('token');
 
 //Submit Function
@@ -154,23 +158,52 @@ leaderBoardBtn.onclick = async function (event){
        const response = await axios.get('http://localhost:3000/premium/leaderBoard', {headers: {"Authorization" : token}});
        console.log(response);
        ldTag.innerHTML += '<h3>Leader Board</h3>'
-      response.data.forEach((userInfro) => {
+       response.data.forEach((userInfro) => {
          ldTag.innerHTML += `<li>Name : ${userInfro.name} -  Total Expense : ${userInfro.totalExpense}`
       })
-      //  {
-
-      //    var list = document.createElement('li');
-      //    list.className='leaderboard-list';
-      //    list.textContent = response[i].name+"  "+"total expense : "+response[i].expenseAmount;
-      //    ldTag.appendChild(list);
-      //  }
       }
       catch(error) {
          console.log(error)
       }
+}
+
+downloadFileBtn.onclick = async function(event){
+
+   try
+   {
+      const response = await axios.get('http://localhost:3000/expense/downloadFile',{headers :{"Authorization " : token}})
+       if(response.status === 200)
+       {
+         var a = document.createElement('a');
+         a.href = response.data.fileUrl;
+         a.download = 'myexpense.csv';
+         a.click();
+       }
+       else
+       throw new Error(response.data.message);
    }
-   // const user = User.findByPk({where : {userId :userId}} )
-   // if(user.isPremium === true){
-   // var buyPremiumBtn = document.getElementById('rzp-btn');
-   // buyPremiumBtn.className="btn-right-display";
-  // }
+
+   catch(err)
+   {
+
+   }
+}   
+
+downloadFileHistoryBtn.onclick = async function(event){
+
+   try{
+      const response = await axios.get('http://localhost:3000/expense/fileHistory',{headers: {"Authorization": token}});
+      console.log(response);
+      fileHistoryTag.innerHTML += '<h3>List of Downloaded Files : </h3>'
+      var j = 1; 
+      for(let i = 0 ; i<response.data.fileData.length; i++)
+       {
+         fileHistoryTag.innerHTML += `<li><a  href = "${response.data.fileData[i].fileUrl}">File ${j}</a>`
+         j++;
+       }
+   }
+   catch(err){
+console.log(err)
+   }
+}
+  

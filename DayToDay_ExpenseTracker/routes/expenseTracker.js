@@ -19,6 +19,10 @@ router.post('/expense/add-expense',userAuthentication.authenticate,expenseContro
 
 router.get('/expense/get-expense',userAuthentication.authenticate,expenseController.getAllExpense);
 
+router.get('/expense/downloadFile',userAuthentication.authenticate,expenseController.downloadFile);
+
+router.get('/expense/fileHistory',userAuthentication.authenticate,expenseController.fileHistory);
+
 router.delete('/expense/delete/:expenseId',userAuthentication.authenticate,expenseController.deleteExpenseById);
 
 router.post('/purchase/updateTransaction',userAuthentication.authenticate,purchaseController.premiumTransaction);
@@ -32,5 +36,7 @@ router.post('/password/forgotpassword',passwordController.forgotPwdEmail);
 router.get('/password/resetpassword/:uniqueId',passwordController.resetPassword);
 
 router.get('/password/updateNewPassword/:uniqueId',passwordController.updateNewPassword);
+
+
 
 module.exports = router;

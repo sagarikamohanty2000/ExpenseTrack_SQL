@@ -2,6 +2,8 @@ const sequelize = require('../util/database');
 
 const Expense = require('../model/expense');
 const User = require('../model/Users');
+const File = require('../model/fileData');
+const s3Services = require('../service/s3service');
 
 const postAddExpense = async (req,res,next)=>{
     
@@ -101,9 +103,76 @@ const deleteExpenseById = async (req,res,next) =>{
     catch(err){console.log(err)}
 }
 
+const downloadFile = async(req, res, next) => {
+
+    const userId = req.user.id;
+    const isPremium = Boolean(req.user.isPremium);
+    try{
+            if(isPremium === false)
+            {
+                return res.status(401).json({
+                    error : {
+                        success: false,
+                        message: "Unauthorised" 
+                    }
+                })
+            }
+            else {
+                const expenses = await req.user.getExpenses();
+                console.log(expenses);
+                const stringifiedExpenseData = JSON.stringify(expenses);
+                const filename = `Expense${userId}/${new Date()}.text`;
+                const fileUrl = await s3Services.uploadToS3(stringifiedExpenseData,filename);
+                await File.create({
+                    fileUrl: fileUrl,
+                    userId: userId
+                })
+                res.status(200).json({
+                    fileUrl, 
+                    success : true,
+                    message : "File download successful"
+                })
+            }
+          // })
+    }
+    catch(err){
+      console.log(err);
+    }
+}
+
+const fileHistory = async(req, res,next) => {
+    
+    const isPremium = Boolean(req.user.isPremium);
+    try {
+        if(isPremium === true){
+        const fileData = await File.findAll({where : {userId : req.user.id}})
+            console.log("GET CALL");
+            return res.status(200).json({
+                fileData,
+                success: true,
+                message: "File data retrived"
+            });
+        }
+
+        else
+        {
+            res.status(401).json({
+                error:{
+                    success: false,
+                    message:"Unauthorised"
+                }
+            })
+        }
+        }
+        catch(err) { console.log(err)}
+
+}
+
 
 module.exports = {
     postAddExpense,
     getAllExpense,
-    deleteExpenseById
+    deleteExpenseById,
+    downloadFile,
+    fileHistory
 }
