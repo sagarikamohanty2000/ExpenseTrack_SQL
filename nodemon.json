@@ -1,5 +1,10 @@
 {
     "env":{
         "SECRET_TOKEN" : "secretKey",
+        "RAZORPAY_KEY_ID" : "rzp_test_cLuh08geiXFM4N",
+        "RAZORPAY_KEY_SECRET" : "qRulhx2zktkdO6aFMKZi0tCr",
+        "BUCKET_NAME_EXPENSE" : "daytodayexpensetracker",
+        "IAM_USER_KEY" : "AKIAZZ3M5CMHVLQFFLVC",
+        "IAM_USER_SECRET" : "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"
     }
 }
