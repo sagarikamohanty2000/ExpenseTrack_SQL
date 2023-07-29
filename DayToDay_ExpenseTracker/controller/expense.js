@@ -47,7 +47,7 @@ const postAddExpense = async (req,res,next)=>{
 
 const getAllExpense = async (req,res,next) => {
    
-    const showItem = Number(req.header('Showitem'));
+    const showItem = Number(req.header('Showitem')) || 10;
     try {
         const page = +req.query.page || 1;
         const LIST_PER_PAGE =showItem;

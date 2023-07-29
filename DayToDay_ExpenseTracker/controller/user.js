@@ -47,7 +47,8 @@ const postUserSignin = async (req, res, next) =>
 }
 
  function generateAccessToken(id){
-    return jwt.sign({id : id},'secretKey');
+    console.log( process.env.SECRET_TOKEN)
+    return jwt.sign({id : id}, process.env.SECRET_TOKEN);
  }
 
 const postUserLogin = async (req,res,next) => {

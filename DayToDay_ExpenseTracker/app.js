@@ -1,4 +1,10 @@
+const path = require('path');
 const express = require('express');
+const helmet = require('helmet');
+const cors = require('cors');
+const morgan = require('morgan');
+const fs = require('fs');
+
 const bodyParser = require('body-parser');
 const sequelize = require('./util/database');
 
@@ -9,11 +15,15 @@ const ForgetPwd = require('./model/forgetPassword');
 const File = require('./model/fileData');
 
 const app = express();
-const cors = require('cors');
+
 
 const expenseTrackerRoutes = require('./routes/expenseTracker');
 
+const accessLogStream = fs.createWriteStream(path.join(__dirname,'access.log'),{flags: 'a'});
 app.use(cors());
+app.use(helmet());
+app.use(morgan('combined',{stream: accessLogStream}));
+
 app.use(bodyParser.json({extended : false}));
 app.use(expenseTrackerRoutes);
 
