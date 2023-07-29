@@ -1,5 +1,4 @@
-const { Sequelize } = require('sequelize');
-const Expense = require('../model/expense');
+
 const User = require('../model/Users');
 
 

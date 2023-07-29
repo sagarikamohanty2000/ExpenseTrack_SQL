@@ -1,3 +1,4 @@
+const path = require('path');
 const nodemailer = require("nodemailer");
 const {v4: uuid} = require('uuid');
 const sequelize = require('../util/database');
@@ -24,12 +25,13 @@ const forgotPwdEmail = async (req,res,next) => {
         },)
          })
 
+
     const transporter = nodemailer.createTransport({
-        host: 'smtp.ethereal.email',
-        port: 587,
+        host: process.env.ETHEREAL_URL,
+        port: process.env.ETHEREAL_PORT,
         auth: {
-            user: 'charlene.brekke32@ethereal.email',
-            pass: 'crq5nYg3gBhnju3TMQ'
+            user: process.env.ETHEREAL_USER,
+            pass: process.env.ETHEREAL_PASS
         }
     });
       

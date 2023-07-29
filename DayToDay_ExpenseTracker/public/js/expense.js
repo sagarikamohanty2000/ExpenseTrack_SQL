@@ -70,7 +70,7 @@ function printTheListForAddExpense(obj){
       })
 
    //Data ShowCased on the screen
-   list.textContent = obj.amount+" "+obj.description+" "+obj.category+" ";
+   list.textContent = obj.amt+" "+obj.description+" "+obj.category+" ";
    list.appendChild(deleteBtn);
 
    ulTag.appendChild(list);
@@ -84,9 +84,7 @@ window.onload = (async () => {
       const LIST_PER_PAGE = localStorage.getItem('showItem');
       const response = await axios.get(`http://localhost:3000/expense/get-expense?page=${page}` , {headers: {"Authorization" : token,"Showitem" :LIST_PER_PAGE }});
       disablePremiumBtnOnwindowLoad(token);
-      console.log(response.data.expenseData.length);
-      
-         showExpenseItemsOnScreen(response.data.expenseData);
+       showExpenseItemsOnScreen(response.data.expenseData);
       showPagination(response.data);
    }
    catch (error)
