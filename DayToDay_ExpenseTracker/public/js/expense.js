@@ -129,7 +129,7 @@ function showExpenseItemsOnScreen(obj)
                })
 
             //Data ShowCased on the screen
-            list.textContent = obj[i].amount+" "+obj[i].description+" "+obj[i].category+" ";
+            list.textContent = Number(obj[i].amount)+" "+obj[i].description+" "+obj[i].category+" ";
             list.appendChild(deleteBtn);
 
             ulTag.appendChild(list);
