@@ -202,10 +202,11 @@ async function disablePremiumBtnOnwindowLoad(token) {
 
 //leaderboard btn is available for premium account
 leaderBoardBtn.onclick = async function (event){
-                     
+                 
    try{
     const response = await axios.get('http://localhost:3000/premium/leaderBoard', {headers: {"Authorization" : token}});
     console.log(response);
+    ldTag.innerHTML =''   
     ldTag.innerHTML += '<h3>Leader Board</h3>'
     response.data.forEach((userInfro) => {
       ldTag.innerHTML += `<li>Name : ${userInfro.name} -  Total Expense : ${userInfro.totalExpense}`
@@ -241,9 +242,10 @@ catch(err)
 
 //file history btn is authoried only for premium account
 downloadFileHistoryBtn.onclick = async function(event){
-
+  
 try{
    const response = await axios.get('http://localhost:3000/expense/fileHistory',{headers: {"Authorization": token}});
+   fileHistoryTag.innerHTML =''
    console.log(response);
    fileHistoryTag.innerHTML += '<h3>List of Downloaded Files : </h3>'
    if(response.data.fileData.length === 0)

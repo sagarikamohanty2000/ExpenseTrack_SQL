@@ -6,8 +6,8 @@ const Order = require('../model/order');
 const premiumPurchase = async (req,res,next) =>  {
  try {
     var rzp = new RazorPay({
-        key_id : 'rzp_test_cLuh08geiXFM4N',
-        key_secret : 'qRulhx2zktkdO6aFMKZi0tCr'
+        key_id : process.env.RAZORPAY_KEY_ID,
+        key_secret : process.env.RAZORPAY_KEY_SECRET
     })
 
     const amount = 2500;
@@ -53,10 +53,6 @@ const premiumTransaction = async (req, res, next) => {
     
        const promise2 = req.user.update({isPremium : true},{transaction: t}).then(async()=>{
                 await t.commit();
-                // return res.status(200).json({
-                //     success : true,
-                //     message : 'Transaction successful'
-                // })
                  console.log('Transaction Successfull');
             })
             
