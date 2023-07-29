@@ -4,6 +4,7 @@ const helmet = require('helmet');
 const cors = require('cors');
 const morgan = require('morgan');
 const fs = require('fs');
+require('dotenv').config();
 
 const bodyParser = require('body-parser');
 const sequelize = require('./util/database');
@@ -17,7 +18,11 @@ const File = require('./model/fileData');
 const app = express();
 
 
-const expenseTrackerRoutes = require('./routes/expenseTracker');
+const expenseRoutes = require('./routes/expense');
+const passwordRoutes = require('./routes/password');
+const premiumRoutes = require('./routes/premium');
+const purchaseRoutes = require('./routes/purchase');
+const userRoutes = require('./routes/user');
 
 const accessLogStream = fs.createWriteStream(path.join(__dirname,'access.log'),{flags: 'a'});
 app.use(cors());
@@ -25,7 +30,11 @@ app.use(helmet());
 app.use(morgan('combined',{stream: accessLogStream}));
 
 app.use(bodyParser.json({extended : false}));
-app.use(expenseTrackerRoutes);
+app.use(expenseRoutes);
+app.use(passwordRoutes);
+app.use(premiumRoutes);
+app.use(purchaseRoutes);
+app.use(userRoutes);
 
 User.hasMany(Expense);
 Expense.belongsTo(User,{constraints: true, onDelete: 'CASCADE'});
