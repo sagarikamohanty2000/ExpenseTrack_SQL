@@ -82,8 +82,8 @@ window.onload = (async () => {
    const page = 1;
    try {
       const LIST_PER_PAGE = localStorage.getItem('showItem');
-      const response = await axios.get(`http://localhost:3000/expense/get-expense?page=${page}` , {headers: {"Authorization" : token,"Showitem" :LIST_PER_PAGE }});
       disablePremiumBtnOnwindowLoad(token);
+      const response = await axios.get(`http://localhost:3000/expense/get-expense?page=${page}` , {headers: {"Authorization" : token,"Showitem" :LIST_PER_PAGE }});
        showExpenseItemsOnScreen(response.data.expenseData);
       showPagination(response.data);
    }
