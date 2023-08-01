@@ -6,8 +6,8 @@ const sequelize = require('../util/database');
 
 const bcrypt = require('bcrypt');
 
-const FP = require('../model/forgetPassword');
-const User = require('../model/Users');
+const FP = require('../models/forgetPassword');
+const User = require('../models/Users');
 
 const forgotPwdEmail = async (req,res,next) => {
 

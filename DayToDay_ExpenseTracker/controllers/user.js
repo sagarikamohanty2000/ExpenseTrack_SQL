@@ -3,7 +3,7 @@ const sequelize = require('../util/database');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const User = require('../model/Users');
+const User = require('../models/Users');
 
 const postUserSignin = async (req, res, next) =>
 {

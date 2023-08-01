@@ -1,5 +1,5 @@
 
-const User = require('../model/Users');
+const User = require('../models/Users');
 
 
 const premiumLeaderBoard = async (req, res, next) => {
