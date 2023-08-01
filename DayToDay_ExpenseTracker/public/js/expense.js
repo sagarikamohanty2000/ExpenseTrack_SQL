@@ -1,16 +1,16 @@
 
 
-var ulTag = document.getElementById('expense-list');
-var ldTag = document.getElementById('leaderboard-user');
-var premiumTag = document.getElementById('premium-user');
-var fileHistoryTag = document.getElementById('file-history');
-var pagination = document.getElementById('pagination');
-var premiumBtn = document.getElementById('rzp-btn');
-var leaderBoardBtn = document.createElement('button');
-var addExpenseBtn = document.getElementById('submit');
-var downloadFileBtn = document.getElementById('download-btn');
-var rowPerPage = document.querySelector('#rows-per-page');
-var downloadFileHistoryBtn = document.getElementById('download-file-history');
+const ulTag = document.getElementById('expense-list');
+const ldTag = document.getElementById('leaderboard-user');
+const premiumTag = document.getElementById('premium-user');
+const fileHistoryTag = document.getElementById('file-history');
+const pagination = document.getElementById('pagination');
+const premiumBtn = document.getElementById('rzp-btn');
+const leaderBoardBtn = document.createElement('button');
+const addExpenseBtn = document.getElementById('submit');
+const downloadFileBtn = document.getElementById('download-btn');
+const rowPerPage = document.querySelector('#rows-per-page');
+const downloadFileHistoryBtn = document.getElementById('download-file-history');
 
 const token = localStorage.getItem('token');
 

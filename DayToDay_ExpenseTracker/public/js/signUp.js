@@ -1,6 +1,7 @@
 
+const signupBtn = document.getElementById('submit');
 
-async function myFunction(event)    
+signupBtn.onclick = async function(event)    
 {
     event.preventDefault();
             alert("The form is submited");

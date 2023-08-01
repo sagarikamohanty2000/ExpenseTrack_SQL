@@ -67,15 +67,28 @@ const resetPassword = async (req,res,next) => {
                                     window.location.href="../view/login.html"
                                   }
                                   </script>
-                                  <form action="/password/updateNewPassword/${forgetPwdId}" onsubmit="myFunction(event)" method="get">
-                                  <label for="fpassword">Enter new Password</label>
-                                  <input name="fpassword" type="password" required></input>
-                                  <button>Reset Password</button>
-                                  </form>
+                                  <body>
+                                  <header id="mainHeader" class="bg-info text-black p-3 mb-3">
+                                        <div class="container">
+                                            <div class="row">
+                                                <h2 id="headerTitle">Reset Password Page</h2>
+                                            </div>
+                                        </div>
+                                   </header>
+                                   <div class="container">
+                                      <div class="box">
+                                        <form action="/password/updateNewPassword/${forgetPwdId}" onsubmit="myFunction(event)" method="get">
+                                        <label for="fpassword">Enter new Password</label>
+                                        <input name="fpassword" type="password" required></input>
+                                        <button>Reset Password</button>
+                                        </form>
+                                  </div>
+                                  </div>
+                                  </body>
                                   </html>
                                   `);
 
-                                  res.end()
+                                   res.end()
                                 })
             }
             else{
@@ -98,8 +111,9 @@ const updateNewPassword = async(req,res,next) => {
     const t = await sequelize.transaction();
             try {
                 const newpassword = req.query.fpassword;
+                const  uniqueId = req.params.uniqueId;
          
-               await FP.findOne({ where : { uuid: req.params.uniqueId }}).then(resetpassword => {
+               await FP.findOne({ where : { uuid: uniqueId }}).then(resetpassword => {
                
                     User.findOne({where: { id : resetpassword.userId}}).then(async (user) => {
                         if(user){
