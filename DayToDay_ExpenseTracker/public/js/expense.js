@@ -32,7 +32,7 @@ addExpenseBtn.onclick = async function (event){
             category,
         }
         try {   
-        const response = await axios.post("http://localhost:3000/expense/add-expense",obj,{headers: {"Authorization" : token}});
+        const response = await axios.post("http://localhost:3000/expense/expenses",obj,{headers: {"Authorization" : token}});
         console.log(response);    
         }
 
@@ -58,7 +58,7 @@ function printTheListForAddExpense(obj){
             {
                
                try{
-               const response = await axios.delete(`http://localhost:3000/expense/delete/${obj.id}`, {headers: {"Authorization" : token}});
+               const response = await axios.delete(`http://localhost:3000/expense/${obj.id}`, {headers: {"Authorization" : token}});
                console.log(response);
                var deleteli = document.getElementById(`${obj.id}`);
                ulTag.removeChild(deleteli);
@@ -83,7 +83,7 @@ window.onload = (async () => {
    try {
       const LIST_PER_PAGE = localStorage.getItem('showItem');
       disablePremiumBtnOnwindowLoad(token);
-      const response = await axios.get(`http://localhost:3000/expense/get-expense?page=${page}` , {headers: {"Authorization" : token,"Showitem" :LIST_PER_PAGE }});
+      const response = await axios.get(`http://localhost:3000/expense/expenses?page=${page}` , {headers: {"Authorization" : token,"Showitem" :LIST_PER_PAGE }});
        showExpenseItemsOnScreen(response.data.expenseData);
       showPagination(response.data);
    }
@@ -115,7 +115,7 @@ function showExpenseItemsOnScreen(obj)
                      {
                         
                         try{
-                        const response = await axios.delete(`http://localhost:3000/expense/delete/${obj[i].id}`, {headers: {"Authorization" : token}});
+                        const response = await axios.delete(`http://localhost:3000/expense/${obj[i].id}`, {headers: {"Authorization" : token}});
                         console.log(response);
                         var deleteli = document.getElementById(`${obj[i].id}`);
                         ulTag.removeChild(deleteli);
@@ -220,7 +220,7 @@ downloadFileBtn.onclick = async function(event){
 
 try
 {
-   const response = await axios.get('http://localhost:3000/expense/downloadFile',{headers :{"Authorization " : token}})
+   const response = await axios.get('http://localhost:3000/expense/downloadfile',{headers :{"Authorization " : token}})
     if(response.status === 200)
     {
       var a = document.createElement('a');
@@ -242,7 +242,7 @@ catch(err)
 downloadFileHistoryBtn.onclick = async function(event){
   
 try{
-   const response = await axios.get('http://localhost:3000/expense/fileHistory',{headers: {"Authorization": token}});
+   const response = await axios.get('http://localhost:3000/expense/filehistory',{headers: {"Authorization": token}});
    fileHistoryTag.innerHTML =''
    console.log(response);
    fileHistoryTag.innerHTML += '<h3>List of Downloaded Files : </h3>'
@@ -307,7 +307,7 @@ function showPagination({
       const LIST_PER_PAGE = localStorage.getItem('showItem');
      
       try{
-         const response = await axios.get(`http://localhost:3000/expense/get-expense?page=${page}` , {headers: {"Authorization" : token, "Showitem" :LIST_PER_PAGE }}); 
+         const response = await axios.get(`http://localhost:3000/expense/expenses?page=${page}` , {headers: {"Authorization" : token, "Showitem" :LIST_PER_PAGE }}); 
             showExpenseItemsOnScreen(response.data.expenseData);
          showPagination(response.data);
       }

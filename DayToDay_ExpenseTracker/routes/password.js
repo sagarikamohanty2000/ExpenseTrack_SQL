@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
-const passwordController = require('../controller/password');
+const passwordcontrollers = require('../controllers/password');
 
-router.post('/password/forgotpassword',passwordController.forgotPwdEmail);
+router.post('/password/forgotpassword',passwordcontrollers.forgotPwdEmail);
 
-router.get('/password/resetpassword/:uniqueId',passwordController.resetPassword);
+router.get('/password/resetpassword/:uniqueId',passwordcontrollers.resetPassword);
 
-router.get('/password/updateNewPassword/:uniqueId',passwordController.updateNewPassword);
+router.get('/password/updateNewPassword/:uniqueId',passwordcontrollers.updateNewPassword);
 
 module.exports = router;

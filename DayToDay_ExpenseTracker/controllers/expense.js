@@ -1,9 +1,9 @@
 
 const sequelize = require('../util/database');
 
-const Expense = require('../model/expense');
-const User = require('../model/Users');
-const File = require('../model/fileData');
+const Expense = require('../models/expense');
+const User = require('../models/Users');
+const File = require('../models/fileData');
 const s3Services = require('../service/s3service');
 
 const postAddExpense = async (req,res,next)=>{

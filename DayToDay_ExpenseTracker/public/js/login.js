@@ -29,11 +29,11 @@ loginBtn.onclick = async function(event)
 signupBtn.onclick = async function(event)
 {
     event.preventDefault();
-    window.location.href="../view/signUp.html"
+    window.location.href="../view/signup.html"
 }
 
 forgetPwdBtn.onclick = async function(event)
 {
     event.preventDefault();
-    window.location.href="../view/forgetPwd.html"
+    window.location.href="../view/forget-pwd.html"
 }

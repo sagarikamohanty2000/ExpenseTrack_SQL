@@ -1,20 +1,20 @@
 const express = require('express');
 const router = express.Router();
 
-const expenseController = require('../controller/expense');
+const expensecontrollers = require('../controllers/expense');
 const userAuthentication = require('../middleware/auth');
 
 
 
-router.post('/expense/add-expense',userAuthentication.authenticate,expenseController.postAddExpense);
+router.post('/expense/expenses',userAuthentication.authenticate,expensecontrollers.postAddExpense);
 
-router.get('/expense/get-expense',userAuthentication.authenticate,expenseController.getAllExpense);
+router.get('/expense/expenses',userAuthentication.authenticate,expensecontrollers.getAllExpense);
 
-router.get('/expense/downloadFile',userAuthentication.authenticate,expenseController.downloadFile);
+router.get('/expense/downloadfile',userAuthentication.authenticate,expensecontrollers.downloadFile);
 
-router.get('/expense/fileHistory',userAuthentication.authenticate,expenseController.fileHistory);
+router.get('/expense/filehistory',userAuthentication.authenticate,expensecontrollers.fileHistory);
 
-router.delete('/expense/delete/:expenseId',userAuthentication.authenticate,expenseController.deleteExpenseById);
+router.delete('/expense/:expenseId',userAuthentication.authenticate,expensecontrollers.deleteExpenseById);
 
 
 module.exports = router;

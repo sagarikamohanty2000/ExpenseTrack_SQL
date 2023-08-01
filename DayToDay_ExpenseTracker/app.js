@@ -8,11 +8,11 @@ require('dotenv').config();
 const bodyParser = require('body-parser');
 const sequelize = require('./util/database');
 
-const User = require('./model/Users');
-const Expense = require('./model/expense');
-const Order = require('./model/order');
-const ForgetPwd = require('./model/forgetPassword');
-const File = require('./model/fileData');
+const User = require('./models/Users');
+const Expense = require('./models/expense');
+const Order = require('./models/order');
+const ForgetPwd = require('./models/forgetPassword');
+const File = require('./models/fileData');
 
 const app = express();
 
