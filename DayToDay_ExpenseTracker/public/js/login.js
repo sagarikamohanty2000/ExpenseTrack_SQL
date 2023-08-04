@@ -18,7 +18,7 @@ loginBtn.onclick = async function(event)
              const response = await axios.post("http://localhost:3000/user/login", obj);
              alert("You have successully logged in");
              localStorage.setItem('token',response.data.token);
-             window.location.href="../view/expense.html"
+             window.location.href="../views/expense.html"
            
             }
              catch(err)  {
@@ -29,11 +29,11 @@ loginBtn.onclick = async function(event)
 signupBtn.onclick = async function(event)
 {
     event.preventDefault();
-    window.location.href="../view/signup.html"
+    window.location.href="../views/signup.html"
 }
 
 forgetPwdBtn.onclick = async function(event)
 {
     event.preventDefault();
-    window.location.href="../view/forget-pwd.html"
+    window.location.href="../views/forget-pwd.html"
 }

@@ -1,4 +1,3 @@
-//require('dotenv').config();
 const RazorPay = require('razorpay');
 
 const sequelize = require('../util/database');
