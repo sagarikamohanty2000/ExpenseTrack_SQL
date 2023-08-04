@@ -2,10 +2,7 @@ const path = require('path');
 const nodemailer = require("nodemailer");
 const {v4: uuid} = require('uuid');
 const sequelize = require('../util/database');
-//const resetPasswordForm = require('../view/resetPassword');
-
-const bcrypt = require('bcrypt');
-
+const bcrypt = require('bcryptjs');
 const FP = require('../models/forgetPassword');
 const User = require('../models/Users');
 

@@ -4,7 +4,7 @@ const sequelize = require('../util/database');
 const Expense = require('../models/expense');
 const User = require('../models/Users');
 const File = require('../models/fileData');
-const s3Services = require('../service/s3service');
+const s3Services = require('../services/s3service');
 
 const postAddExpense = async (req,res,next)=>{
     
@@ -147,7 +147,6 @@ const downloadFile = async(req, res, next) => {
                     message : "File download successful"
                 })
             }
-          // })
     }
     catch(err){
       console.log(err);
