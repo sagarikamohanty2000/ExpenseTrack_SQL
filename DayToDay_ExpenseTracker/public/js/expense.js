@@ -11,6 +11,8 @@ const addExpenseBtn = document.getElementById('submit');
 const downloadFileBtn = document.getElementById('download-btn');
 const rowPerPage = document.querySelector('#rows-per-page');
 const downloadFileHistoryBtn = document.getElementById('download-file-history');
+const logoutBtn = document.getElementById('logout-btn');
+
 
 const token = localStorage.getItem('token');
 
@@ -135,10 +137,18 @@ function showExpenseItemsOnScreen(obj)
    }
 
 
+logoutBtn.onclick = async function(event) {
+   localStorage.clear();
+   event.preventDefault();
+ 
+    window.location.href="../views/login.html"
+}
+
 //when user buys premium account
 premiumBtn.onclick = async function (event)
 {
    const response = await axios.get('http://localhost:3000/purchase/premium',{headers: {"Authorization" : token}});
+   //
    var options = {
       "key": response.data.key_id,
       "order_id": response.data.order.id,
@@ -147,16 +157,15 @@ premiumBtn.onclick = async function (event)
          order_id: options.order_id,
          payment_id: response.razorpay_payment_id,
          }, {headers : {"Authorization" : token}});
-
+         disableThePremiumBtn();
          alert('You are a Premium User now');
          
-         disableThePremiumBtn();
+
       }
    };
 
    const rzp1 = new Razorpay(options);
    rzp1.open();
-   e.preventDefault();
 
 
    rzp1.on('payment.failed', function (response){
