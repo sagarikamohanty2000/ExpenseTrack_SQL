@@ -9,7 +9,7 @@ async function myFunction(event)
                 femail
             }
             try {         
-             const response = await axios.post("http://localhost:3000/password/forgotpassword", obj,);
+             const response = await axios.post("http://3.16.95.158/password/forgotpassword", obj,);
              console.log(response)
            
             }
