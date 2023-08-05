@@ -34,7 +34,7 @@ addExpenseBtn.onclick = async function (event){
             category,
         }
         try {   
-        const response = await axios.post("http://localhost:3000/expense/expenses",obj,{headers: {"Authorization" : token}});
+        const response = await axios.post("http://3.16.95.158/expense/expenses",obj,{headers: {"Authorization" : token}});
         console.log(response);    
         }
 
@@ -60,7 +60,7 @@ function printTheListForAddExpense(obj){
             {
                
                try{
-               const response = await axios.delete(`http://localhost:3000/expense/${obj.id}`, {headers: {"Authorization" : token}});
+               const response = await axios.delete(`http://3.16.95.158/expense/${obj.id}`, {headers: {"Authorization" : token}});
                console.log(response);
                var deleteli = document.getElementById(`${obj.id}`);
                ulTag.removeChild(deleteli);
@@ -85,7 +85,7 @@ window.onload = (async () => {
    try {
       const LIST_PER_PAGE = localStorage.getItem('showItem');
       disablePremiumBtnOnwindowLoad(token);
-      const response = await axios.get(`http://localhost:3000/expense/expenses?page=${page}` , {headers: {"Authorization" : token,"Showitem" :LIST_PER_PAGE }});
+      const response = await axios.get(`http://3.16.95.158/expense/expenses?page=${page}` , {headers: {"Authorization" : token,"Showitem" :LIST_PER_PAGE }});
        showExpenseItemsOnScreen(response.data.expenseData);
       showPagination(response.data);
    }
@@ -117,7 +117,7 @@ function showExpenseItemsOnScreen(obj)
                      {
                         
                         try{
-                        const response = await axios.delete(`http://localhost:3000/expense/${obj[i].id}`, {headers: {"Authorization" : token}});
+                        const response = await axios.delete(`http://3.16.95.158/expense/${obj[i].id}`, {headers: {"Authorization" : token}});
                         console.log(response);
                         var deleteli = document.getElementById(`${obj[i].id}`);
                         ulTag.removeChild(deleteli);
@@ -147,13 +147,13 @@ logoutBtn.onclick = async function(event) {
 //when user buys premium account
 premiumBtn.onclick = async function (event)
 {
-   const response = await axios.get('http://localhost:3000/purchase/premium',{headers: {"Authorization" : token}});
+   const response = await axios.get('http://3.16.95.158/purchase/premium',{headers: {"Authorization" : token}});
    //
    var options = {
       "key": response.data.key_id,
       "order_id": response.data.order.id,
       "handler" : async function (response) {
-         await axios.post('http://localhost:3000/purchase/updateTransaction',{
+         await axios.post('http://3.16.95.158/purchase/updateTransaction',{
          order_id: options.order_id,
          payment_id: response.razorpay_payment_id,
          }, {headers : {"Authorization" : token}});
@@ -184,7 +184,7 @@ function disableThePremiumBtn() {
 //when users account is premium buy btn's display in none
 async function disablePremiumBtnOnwindowLoad(token) {
    try {
-      const response = await axios.get('http://localhost:3000/user/UserByToken/', {headers: {"Authorization" : token}});
+      const response = await axios.get('http://3.16.95.158/user/UserByToken/', {headers: {"Authorization" : token}});
 
       if(response.data.isPremium === true){
          var buyPremiumBtn = document.getElementById('rzp-btn');
@@ -211,7 +211,7 @@ async function disablePremiumBtnOnwindowLoad(token) {
 leaderBoardBtn.onclick = async function (event){
                  
    try{
-    const response = await axios.get('http://localhost:3000/premium/leaderBoard', {headers: {"Authorization" : token}});
+    const response = await axios.get('http://3.16.95.158/premium/leaderBoard', {headers: {"Authorization" : token}});
     console.log(response);
     ldTag.innerHTML =''   
     ldTag.innerHTML += '<h3>Leader Board</h3>'
@@ -229,7 +229,7 @@ downloadFileBtn.onclick = async function(event){
 
 try
 {
-   const response = await axios.get('http://localhost:3000/expense/downloadfile',{headers :{"Authorization " : token}})
+   const response = await axios.get('http://3.16.95.158/expense/downloadfile',{headers :{"Authorization " : token}})
     if(response.status === 200)
     {
       var a = document.createElement('a');
@@ -251,7 +251,7 @@ catch(err)
 downloadFileHistoryBtn.onclick = async function(event){
   
 try{
-   const response = await axios.get('http://localhost:3000/expense/filehistory',{headers: {"Authorization": token}});
+   const response = await axios.get('http://3.16.95.158/expense/filehistory',{headers: {"Authorization": token}});
    fileHistoryTag.innerHTML =''
    console.log(response);
    fileHistoryTag.innerHTML += '<h3>List of Downloaded Files : </h3>'
@@ -316,7 +316,7 @@ function showPagination({
       const LIST_PER_PAGE = localStorage.getItem('showItem');
      
       try{
-         const response = await axios.get(`http://localhost:3000/expense/expenses?page=${page}` , {headers: {"Authorization" : token, "Showitem" :LIST_PER_PAGE }}); 
+         const response = await axios.get(`http://3.16.95.158/expense/expenses?page=${page}` , {headers: {"Authorization" : token, "Showitem" :LIST_PER_PAGE }}); 
             showExpenseItemsOnScreen(response.data.expenseData);
          showPagination(response.data);
       }
