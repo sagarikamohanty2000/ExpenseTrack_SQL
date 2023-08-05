@@ -37,33 +37,23 @@ const premiumPurchase = async (req,res,next) =>  {
 
 const premiumTransaction = async (req, res, next) => {
     try{
-        const t = await sequelize.transaction();
-      
-        const {payment_id, order_id} = req.body;
-        
-        const promise1 =  Order.findOne({where : {orderId : order_id}, transaction: t})
-        .then(async (order) => {
-            await t.commit();
-            order.update({paymentId : payment_id, status : 'SUCCESSFUL'})
-        })
-        .catch(async(err) => {
-            await t.rollback();
-            console.log(err);
-        })
-    
-       const promise2 = req.user.update({isPremium : true},{transaction: t}).then(async()=>{
-                await t.commit();
-                 console.log('Transaction Successfull');
-            })
-            
-        .catch(async(err) => {
-          await t.rollback();
-          console.log(err);
+      const {payment_id, order_id} = req.body;
+
+      const promise1 =  Order.findOne({where : {orderId : order_id}})
+      .then(order => {
+          order.update({paymentId : payment_id, status : 'SUCCESSFUL'})
       })
 
-            Promise.all([promise1, promise2]).then((values) => {
-            console.log(values);
-        })
+     const promise2 = req.user.update({isPremium : true}).then(()=>{
+              return res.status(200).json({
+                  success : true,
+                  message : 'Transaction successful'
+              })
+          })
+
+          Promise.all([promise1, promise2]).then((values) => {
+          console.log(values);
+      })
     }
 
     catch(err){ 
